@@ -24,5 +24,7 @@ This project automates the opening and closing of window blinds using an Arduino
 | **12** | **IN1** | Motor direction control |
 | **11** | **IN2** | Motor direction control |
 
-## Image 
+## Images
 ![alt text](arduinoBlindsImg.png "Title")
+
+![alt text](IRL_Img.png)
