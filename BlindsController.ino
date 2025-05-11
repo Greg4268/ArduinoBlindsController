@@ -1,13 +1,17 @@
+#include <RTC.h>
+
 const int pwmPin = 3;        
 const int directionPin = 12; // Direction control (IN1)
 const int directionPin2 = 11; // Direction control (IN2)
 
 bool directionState = true;
-// replace code below to set to 12 hour interval for blinds control
-const unsigned long interval = 10000; // 12UL * 60 * 60 * 1000; 
-unsigned long previousMillis = 0;
+bool triggeredToday = false;
 
 void setup() {
+    Serial.begin(9600);
+    while(!Serial);
+    RTC.begin();
+
     pinMode(directionPin, OUTPUT);
     pinMode(directionPin2, OUTPUT);
     pinMode(pwmPin, OUTPUT);
@@ -19,14 +23,27 @@ void setup() {
 }
 
 void loop() {
-    unsigned long currentMillis = millis();
+    auto currentTime = RTC.getTime();
 
-    if (currentMillis - previousMillis >= interval) {
-        previousMillis = currentMillis;
+    int hour = currentTime.hour;
+    int minute = currentTime.minute;
+    int second = currentTime.second;
 
+    Serial.printf("Time: %02d:%02d:%02d\n", hour, minute, second);
+
+    // Trigger at 8:00:00
+    if (hour == 9 && minute == 0 && second == 0 && !triggeredToday)
+    {
+        Serial.println('Triggered at 8AM!');
         runMotor(directionState);
         directionState = !directionState;
     }
+
+    if(hour == 8 && minute == 1)
+    {
+        triggeredToday = false;
+    }
+    delay(1000);
 }
 
 void runMotor(bool direction) {
