@@ -32,9 +32,9 @@ void loop() {
     Serial.printf("Time: %02d:%02d:%02d\n", hour, minute, second);
 
     // Trigger at 8:00:00
-    if (hour == 9 && minute == 0 && second == 0 && !triggeredToday)
+    if (hour == 8 && minute == 0 && second == 0 && !triggeredToday)
     {
-        Serial.println('Triggered at 8AM!');
+        Serial.println('Motor Triggered');
         runMotor(directionState);
         directionState = !directionState;
     }
